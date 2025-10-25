@@ -16,7 +16,7 @@ def generate_launch_description():
 
     # 启动 Gazebo，加载自定义世界
     gazebo_launch = ExecuteProcess(
-        cmd=['gazebo', '--verbose', world_file, '-s', 'libgazebo_ros_factory.so'],
+        cmd=['gazebo', '--verbose', world_file, '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so'],
         output='screen'
     )
 

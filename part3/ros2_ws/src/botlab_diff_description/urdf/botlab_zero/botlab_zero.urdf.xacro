@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="botlab_zero">
+
+  <!-- 引入模块 -->
+  <xacro:include filename="$(find botlab_diff_description)/urdf/botlab_zero/base.urdf.xacro"/>
+  <xacro:include filename="$(find botlab_diff_description)/urdf/botlab_zero/wheel.urdf.xacro"/>
+
+  <!-- 参数定义（保持与原机器人一致） -->
+  <xacro:property name="chassis_length" value="0.26"/>     <!-- 底盘长度 26cm -->
+  <xacro:property name="chassis_width"  value="0.22"/>     <!-- 底盘宽度 22cm -->
+  <xacro:property name="chassis_height" value="0.08"/>     <!-- 底盘高度 8cm -->
+  <xacro:property name="wheel_radius"   value="0.0325"/>   <!-- 轮子半径 3.25cm -->
+  <xacro:property name="wheel_width"    value="0.03"/>     <!-- 轮胎厚度 3cm -->
+  <xacro:property name="wheelbase"      value="0.18"/>     <!-- 前后轮距 -->
+  <xacro:property name="track"          value="0.20"/>     <!-- 左右轮距 -->
+
+  <!-- 底盘模块 -->
+  <xacro:base
+    chassis_length="${chassis_length}"
+    chassis_width="${chassis_width}"
+    chassis_height="${chassis_height}"
+    wheel_radius="${wheel_radius}"/>
+
+  <!-- 四个轮子：位置完全复刻原机器人 -->
+  <xacro:wheel prefix="fl"
+               x="${ wheelbase/2}"
+               y="${ track/2}"
+               wheel_radius="${wheel_radius}"
+               wheel_width="${wheel_width}"/>
+
+  <xacro:wheel prefix="fr"
+               x="${ wheelbase/2}"
+               y="-${ track/2}"
+               wheel_radius="${wheel_radius}"
+               wheel_width="${wheel_width}"/>
+
+  <xacro:wheel prefix="rl"
+               x="-${ wheelbase/2}"
+               y="${ track/2}"
+               wheel_radius="${wheel_radius}"
+               wheel_width="${wheel_width}"/>
+
+  <xacro:wheel prefix="rr"
+               x="-${ wheelbase/2}"
+               y="-${ track/2}"
+               wheel_radius="${wheel_radius}"
+               wheel_width="${wheel_width}"/>
+
+</robot>

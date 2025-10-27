@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="base" params="chassis_length chassis_width chassis_height wheel_radius">
+    <link name="base_link">
+      <visual>
+        <geometry>
+          <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+        </geometry>
+        <origin xyz="0 0 ${wheel_radius + chassis_height/2}" rpy="0 0 0"/>
+        <material name="blue">
+          <color rgba="0.1 0.4 0.8 1"/>
+        </material>
+      </visual>
+
+      <collision>
+        <geometry>
+          <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+        </geometry>
+        <origin xyz="0 0 ${wheel_radius + chassis_height/2}" rpy="0 0 0"/>
+      </collision>
+
+      <inertial>
+        <mass value="5.0"/>
+        <inertia ixx="0.1" ixy="0" ixz="0"
+                 iyy="0.1" iyz="0" izz="0.1"/>
+      </inertial>
+    </link>
+    <gazebo reference="base_link">
+        <mu1>1.0</mu1>
+        <mu2>1.0</mu2>
+        <material>Gazebo/Blue</material>
+    </gazebo>
+  </xacro:macro>
+
+</robot>

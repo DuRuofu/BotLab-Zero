@@ -1,49 +1,47 @@
-import os
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from ament_index_python.packages import get_package_share_directory
+import os
 import xacro
 
 def generate_launch_description():
     pkg_path = get_package_share_directory('botlab_diff_description')
-    xacro_file = os.path.join(pkg_path, 'urdf', 'diff_drive_car.urdf.xacro')
-    world_file = os.path.join(pkg_path, 'world', 'room.world')  # 自定义世界文件路径
+    xacro_file = os.path.join(pkg_path, 'urdf', 'botlab_zero', 'botlab_zero.urdf.xacro')
 
-    # 转换 xacro 为 URDF
+    # 生成 robot_description
     robot_description_config = xacro.process_file(xacro_file)
     robot_desc = robot_description_config.toxml()
 
-    # 使用官方 gazebo.launch.py 启动 Gazebo，传入自定义 world
-    gazebo_launch = IncludeLaunchDescription(
+    # 启动 Gazebo
+    gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')
-        ),
-        launch_arguments={'world': world_file}.items()
+        )
     )
 
-    # robot_state_publisher 发布 TF
-    rsp_node = Node(
+    # robot_state_publisher
+    robot_state_publisher = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        output='screen',
-        parameters=[{'use_sim_time': True, 'robot_description': robot_desc}]
+        parameters=[{'robot_description': robot_desc}],
+        output='screen'
     )
 
     # 延迟 spawn_entity，确保 Gazebo Ros Factory 已启动
-    spawn_node = TimerAction(
+    spawn_entity = TimerAction(
         period=3.0,  # 延迟 3 秒
         actions=[Node(
             package='gazebo_ros',
             executable='spawn_entity.py',
-            arguments=['-entity', 'diff_drive_car', '-topic', 'robot_description'],
+            arguments=['-entity', 'botlab_zero', '-topic', 'robot_description'],
             output='screen'
         )]
     )
 
     return LaunchDescription([
-        gazebo_launch,
-        rsp_node,
-        spawn_node
+        gazebo,
+        robot_state_publisher,
+        spawn_entity
     ])

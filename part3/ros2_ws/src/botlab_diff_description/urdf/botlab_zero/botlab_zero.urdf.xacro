@@ -4,6 +4,7 @@
   <!-- 引入模块 -->
   <xacro:include filename="$(find botlab_diff_description)/urdf/botlab_zero/base.urdf.xacro"/>
   <xacro:include filename="$(find botlab_diff_description)/urdf/botlab_zero/wheel.urdf.xacro"/>
+  <xacro:include filename="$(find botlab_diff_description)/urdf/botlab_zero/control.urdf.xacro"/>
 
   <!-- 参数定义（保持与原机器人一致） -->
   <xacro:property name="chassis_length" value="0.26"/>     <!-- 底盘长度 26cm -->
@@ -46,4 +47,47 @@
                wheel_radius="${wheel_radius}"
                wheel_width="${wheel_width}"/>
 
+  <!-- ros2_control transmission -->
+  <xacro:diff_drive_control prefix="botlab_zero"/>
+<!-- ros2_control system -->
+
+<ros2_control name="botlab_zero_hw" type="system">
+  <hardware>
+    <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+  </hardware>
+
+  <joint name="joint_fl">
+    <command_interface name="velocity"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="joint_fr">
+    <command_interface name="velocity"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="joint_rl">
+    <command_interface name="velocity"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+  <joint name="joint_rr">
+    <command_interface name="velocity"/>
+    <state_interface name="position"/>
+    <state_interface name="velocity"/>
+  </joint>
+</ros2_control>
+
+
+  <!-- Gazebo 配置 -->
+  <gazebo reference="base_link">
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <material>Gazebo/Blue</material>
+
+    <!-- ROS2 Control 插件 -->
+    <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+      <parameters>$(find botlab_diff_description)/config/botlab_zero_controllers.yaml</parameters>
+    </plugin>
+  </gazebo>
 </robot>

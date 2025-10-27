@@ -1,0 +1,32 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100
+    use_sim_time: true
+
+botlab_zero_hw:
+  ros__parameters:
+    type: "gazebo_ros2_control/GazeboSystem"
+    joints:
+      - joint_fl
+      - joint_fr
+      - joint_rl
+      - joint_rr
+
+joint_state_broadcaster:
+  ros__parameters:
+    type: joint_state_broadcaster/JointStateBroadcaster
+    autostart: true
+    joints:
+      - joint_fl
+      - joint_fr
+      - joint_rl
+      - joint_rr
+
+diff_drive_controller:
+  ros__parameters:
+    type: diff_drive_controller/DiffDriveController
+    left_wheel_names: ["joint_fl", "joint_rl"]
+    right_wheel_names: ["joint_fr", "joint_rr"]
+    wheel_separation: 0.20
+    wheel_radius: 0.0325
+    autostart: true

@@ -17,6 +17,7 @@ setup(
         (os.path.join('share', package_name, 'urdf/botlab_zero'), glob('urdf/botlab_zero/*.xacro')),
         (os.path.join('share', package_name, 'rviz'), glob('rviz/*.rviz')),
         (os.path.join('share', package_name, 'world'), glob('world/*.world')),
+        (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
